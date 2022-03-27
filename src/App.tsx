@@ -1,8 +1,13 @@
 import React from 'react'
-import './App.css'
+import styled from 'styled-components'
+
+const Hello = styled.p`
+  background-color: red;
+  padding: 2rem;
+`
 
 function App() {
-  return <h1> hello </h1>
+  return <Hello> sdfsdfsdf </Hello>
 }
 
 export default App
