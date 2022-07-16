@@ -4,13 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "plugin:react/recommended",
-    "airbnb",
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "prettier"
-  ],
+  "extends": ["plugin:react/recommended", "airbnb", "eslint:recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
