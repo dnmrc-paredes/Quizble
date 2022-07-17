@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { getToken } from '../services/token'
-import { getQuizzes } from '../services/quiz'
+import { getToken } from './services/token'
+import { Question, QuestionItem } from './components/QuestionItem'
+import { getQuizzes } from './services/quiz'
 
-const Hello = styled.p`
-  background-color: red;
-  padding: 2rem;
-`
-
-interface Questions {
-  category: string
-  correct_answer: string
-  difficulty: string
-  question: string
-  type: string
-  incorrect_answers: string[]
+const S = {
+  Container: styled.main`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+    form {
+      max-width: 1000px;
+      button {
+        margin: 0;
+        margin-top: 15px;
+        width: fit-content;
+        padding: 10px 20px;
+        width: 100px;
+      }
+    }
+  `
 }
 
 function App() {
-  const [quizzes, setQuizzes] = useState<Questions[]>([])
+  const [quizzes, setQuizzes] = useState<Question[]>([])
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
     const generateToken = async () => {
@@ -27,23 +34,27 @@ function App() {
     }
 
     const generateQuizzes = async () => {
-      const { results } = (await getQuizzes(await generateToken())) as { results: Questions[] }
-      console.log(setQuizzes(results))
+      const { results } = (await getQuizzes(await generateToken())) as { results: Question[] }
+      setQuizzes(results)
     }
 
     generateQuizzes()
   }, [])
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    setIsSubmitted(true)
+  }
+
   return (
-    <div>
-      {quizzes.map((question, index) => (
-        <div key={question.question}>
-          <h1>
-            {`${index + 1}.)`} {question.question}
-          </h1>
-        </div>
-      ))}
-    </div>
+    <S.Container>
+      <form onSubmit={handleSubmit}>
+        {quizzes.map((question, index) => (
+          <QuestionItem isSubmitted={isSubmitted} question={question} index={index} />
+        ))}
+        <button type='submit'> Finish </button>
+      </form>
+    </S.Container>
   )
 }
 
