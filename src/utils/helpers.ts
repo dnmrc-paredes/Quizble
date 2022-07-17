@@ -4,3 +4,9 @@ export const decodeString = (str: string) =>
     .replace(/&#039;/g, "'")
     .replace(/&amp;/g, '&')
     .replace(/&Aacute;/, 'Á')
+    .replace(/&aacute;/, 'á')
+    .replace(/&Acirc;/, 'Â')
+    .replace(/&acirc;/, 'â')
+    .replace(/74&ndash;/, '74-')
+
+export const getCurrentToken = () => localStorage.getItem('token')

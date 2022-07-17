@@ -1,21 +1,26 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import styled from 'styled-components'
 import { decodeString } from '../../utils/helpers'
 
 const S = {
   Container: styled.div<{ isSubmitted: boolean; isCorrect: boolean }>`
-    padding: 30px 20px;
+    padding: 20px;
     border: ${({ isCorrect, isSubmitted }) =>
       // eslint-disable-next-line no-nested-ternary
       `solid 1px ${isSubmitted ? (isCorrect ? '#34eb83' : '#f01010') : 'gainsboro'}`};
     margin: 10px 0;
+    border-radius: 5px;
+    @media screen and (min-width: 500px) {
+      padding: 30px 20px;
+    }
     .title {
       margin-bottom: 15px;
+      font-size: 18px;
     }
     .info-answer {
       margin-top: 15px;
       .correct-answer {
-        font-weight: 700;
+        font-weight: 600;
       }
     }
   `,
@@ -23,6 +28,7 @@ const S = {
     background-color: ${({ isCorrect, isSubmitted }) =>
       // eslint-disable-next-line no-nested-ternary
       isSubmitted ? (isCorrect ? 'transparent' : 'green') : 'white'};
+    margin-bottom: 8px;
   `
 }
 
@@ -49,14 +55,23 @@ type QuestionItemProps = {
   question: Question
   index: number
   isSubmitted: boolean
+  setTotalScore: Dispatch<SetStateAction<number>>
   // eslint-disable-next-line no-unused-vars
 }
 
-export const QuestionItem = ({ question, index, isSubmitted }: QuestionItemProps) => {
+export const QuestionItem = ({
+  question,
+  index,
+  isSubmitted,
+  setTotalScore
+}: QuestionItemProps) => {
   const [userAnswer, setUserAnswer] = useState('')
 
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     setUserAnswer(e.target.value)
+    if (question.correct_answer === e.target.value) {
+      setTotalScore((prevTotalScore) => prevTotalScore + 1)
+    }
   }
 
   return (
@@ -68,7 +83,7 @@ export const QuestionItem = ({ question, index, isSubmitted }: QuestionItemProps
         {`${index + 1}.)`} {decodeString(question.question)}
       </h2>
       {[...question.incorrect_answers, question.correct_answer].map((answer) => (
-        <div>
+        <div key={answer}>
           <S.StyledRadio
             type='radio'
             name={question.category}

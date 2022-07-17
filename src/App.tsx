@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { getToken } from './services/token'
 import { Question, QuestionItem } from './components/QuestionItem'
 import { getQuizzes } from './services/quiz'
 
@@ -9,7 +8,10 @@ const S = {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 50px 20px;
+    padding: 50px 10px;
+    @media screen and (min-width: 500px) {
+      padding: 50px 20px;
+    }
     form {
       max-width: 1000px;
       button {
@@ -18,6 +20,15 @@ const S = {
         width: fit-content;
         padding: 10px 20px;
         width: 100px;
+        background-color: black;
+        border: none;
+        outline: none;
+        color: white;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+      .score {
+        margin-top: 15px;
       }
     }
   `
@@ -26,15 +37,11 @@ const S = {
 function App() {
   const [quizzes, setQuizzes] = useState<Question[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [totalScore, setTotalScore] = useState(0)
 
   useEffect(() => {
-    const generateToken = async () => {
-      const res = await getToken()
-      return res
-    }
-
     const generateQuizzes = async () => {
-      const { results } = (await getQuizzes(await generateToken())) as { results: Question[] }
+      const { results } = (await getQuizzes()) as { results: Question[] }
       setQuizzes(results)
     }
 
@@ -50,9 +57,21 @@ function App() {
     <S.Container>
       <form onSubmit={handleSubmit}>
         {quizzes.map((question, index) => (
-          <QuestionItem isSubmitted={isSubmitted} question={question} index={index} />
+          <QuestionItem
+            setTotalScore={setTotalScore}
+            isSubmitted={isSubmitted}
+            question={question}
+            index={index}
+            key={question.question}
+          />
         ))}
         <button type='submit'> Finish </button>
+        {isSubmitted && (
+          <p className='score'>
+            {' '}
+            Your score is {totalScore}/{quizzes.length}{' '}
+          </p>
+        )}
       </form>
     </S.Container>
   )
