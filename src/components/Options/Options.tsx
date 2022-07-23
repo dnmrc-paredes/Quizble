@@ -50,7 +50,7 @@ const categories = [
   }
 ]
 
-const difficulties = ['Any Category', 'easy', 'medium', 'hard']
+const difficulties = ['Any Difficulty', 'easy', 'medium', 'hard']
 const types = ['Any Type', 'multiple', 'boolean']
 
 type OptionsProps = {

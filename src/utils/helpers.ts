@@ -8,6 +8,8 @@ export const decodeString = (str: string) =>
     .replace(/&Acirc;/, 'Â')
     .replace(/&acirc;/, 'â')
     .replace(/74&ndash;/, '74-')
+    .replace(/&ntilde;/, 'ñ')
+    .replace(/&iacute;/, 'í')
 
 export const getCurrentToken = () => localStorage.getItem('token')
 
