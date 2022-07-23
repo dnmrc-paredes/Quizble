@@ -10,3 +10,5 @@ export const decodeString = (str: string) =>
     .replace(/74&ndash;/, '74-')
 
 export const getCurrentToken = () => localStorage.getItem('token')
+
+export const capitalFirstLetter = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
