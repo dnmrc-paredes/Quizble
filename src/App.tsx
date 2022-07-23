@@ -47,8 +47,10 @@ function App() {
 
   useEffect(() => {
     const generateQuizzes = async () => {
-      const { results } = (await getQuizzes()) as { results: Question[] }
-      setQuizzes(results)
+      const data = (await getQuizzes({ category, difficulty, type })) as {
+        results: Question[]
+      }
+      setQuizzes(data.results)
     }
 
     generateQuizzes()
@@ -69,10 +71,13 @@ function App() {
     setType(e.target.value)
   }
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    console.log(category, difficulty, type)
-    console.log('gago')
+
+    const data = (await getQuizzes({ category, difficulty, type })) as {
+      results: Question[]
+    }
+    setQuizzes(data.results)
   }
 
   return (
