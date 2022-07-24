@@ -40,7 +40,7 @@ const S = {
 function App() {
   const [quizzes, setQuizzes] = useState<Question[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [totalScore, setTotalScore] = useState(0)
+  const [_totalScore, setTotalScore] = useState(0)
   const [category, setCategory] = useState('Any Category')
   const [difficulty, setDifficulty] = useState('Any Difficulty')
   const [type, setType] = useState('Any Type')
@@ -102,12 +102,12 @@ function App() {
           {' '}
           Finish{' '}
         </button>
-        {isSubmitted && (
+        {/* {isSubmitted && (
           <p className='score'>
             {' '}
             Your score is {totalScore}/{quizzes.length}{' '}
           </p>
-        )}
+        )} */}
       </form>
     </S.Container>
   )
